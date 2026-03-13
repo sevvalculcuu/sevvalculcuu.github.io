@@ -1,10 +1,13 @@
 <!doctype html>
 <html lang="tr">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Şevval Çulcu | İletişim</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <header>
     <h1>Şevval Çulcu</h1>
@@ -39,6 +42,99 @@
     <p>Evet, özellikle eğitim ve açık kaynak projelerinde iş birliğine açığım.</p>
 
     <p><a href="index.html">Ana sayfaya geri dön</a></p>
+
+    <!-- Form Alanı -->
+    <div class="contact-container">
+      <h2>Detaylı İletişim Formu</h2>
+      <p class="form-subtitle">Benimle iletişime geçmek için aşağıdaki formu eksiksiz doldurabilirsiniz.</p>
+
+      <form action="#" method="POST">
+
+        <!-- 1. Ad Soyad (Zorunlu) -->
+        <div class="form-group">
+          <label for="adSoyad">Ad Soyad:</label>
+          <input type="text" id="adSoyad" name="adSoyad" placeholder="Örn: Asaf Karataş" required>
+        </div>
+
+        <!-- 2. E-posta (Zorunlu) -->
+        <div class="form-group">
+          <label for="eposta">E-posta Adresi:</label>
+          <input type="email" id="eposta" name="eposta" placeholder="ornek@mail.com" required>
+        </div>
+
+        <!-- 3. Şifre -->
+        <div class="form-group">
+          <label for="sifre">Başvuru Takip Şifresi:</label>
+          <input type="password" id="sifre" name="sifre" placeholder="Şifrenizi girin">
+        </div>
+
+        <!-- 4. İletişim Tercihi -->
+        <div class="form-group radio-group-container">
+          <label class="group-label">İletişim Tercihi:</label>
+          <div class="radio-group-box">
+            <label class="radio-label">
+              <input type="radio" name="iletisimTercihi" value="eposta" checked>
+              Bana e-posta ile ulaşın
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="iletisimTercihi" value="telefon">
+              Bana telefonla ulaşın
+            </label>
+          </div>
+        </div>
+
+        <!-- 5. İlgi Alanları -->
+        <div class="form-group checkbox-group-container">
+          <label class="group-label">İlgi Alanları / Yetenekler:</label>
+          <div class="checkbox-group-box">
+            <label class="check-label">
+              <input type="checkbox" name="yetenek" value="HTML">
+              HTML
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="yetenek" value="CSS">
+              CSS
+            </label>
+            <label class="check-label">
+              <input type="checkbox" name="yetenek" value="Algoritma">
+              Algoritma
+            </label>
+          </div>
+        </div>
+
+        <!-- 6. Konu (Zorunlu - Select) -->
+        <div class="form-group">
+          <label for="konu">Konu:</label>
+          <select id="konu" name="konu" required>
+            <option value="" disabled selected>Lütfen bir konu seçin...</option>
+            <option value="is-teklifi">İş Teklifi</option>
+            <option value="soru">Soru</option>
+            <option value="geri-bildirim">Geri Bildirim</option>
+            <option value="proje">Proje İşbirliği</option>
+          </select>
+        </div>
+
+        <!-- 7. Dosya Yükleme -->
+        <div class="form-group">
+          <label for="dosya">Özgeçmiş (CV) veya Fotoğraf Yükle:</label>
+          <input type="file" id="dosya" name="dosya" class="file-input">
+        </div>
+
+        <!-- 8. Mesaj (Zorunlu - Textarea) -->
+        <div class="form-group">
+          <label for="mesaj">Mesajınız:</label>
+          <textarea id="mesaj" name="mesaj" rows="4" placeholder="Detaylı mesajınızı buraya yazabilirsiniz..."
+            required></textarea>
+        </div>
+
+        <!-- 9. Butonlar (Zorunlu Button ve Temizle) -->
+        <div class="form-actions">
+          <button type="submit" class="btn-submit">Gönder</button>
+          <button type="reset" class="btn-reset">Temizle</button>
+        </div>
+
+      </form>
+    </div>
   </main>
 
   <footer>
@@ -46,4 +142,5 @@
     <p>&copy; 2026 Şevval Çulcu | Web Programlama</p>
   </footer>
 </body>
+
 </html>
