@@ -154,6 +154,18 @@ gap kullanın
     border-radius: 5px;
     font-size: 1.2rem;
     font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.card:hover {
+    background-color: #457b9d;
+}
+
+.card:active {
+    transform: scale(0.95);
+    background-color: #e63946;
 }
 
 /* 4) Flex Grow Uygulama (Recap) */
