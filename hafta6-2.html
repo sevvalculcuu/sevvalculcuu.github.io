@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hafta 6-2 – Birim Dönüştürücü</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#07070d;--s1:#0e0e1a;--s2:#13131f;--border:rgba(255,255,255,0.07);--text:#f0f0f8;--sub:#8888a0;--dim:#44445a;--nav-bg:rgba(14,14,26,0.82);--v:#c084fc;--p:#e879f9;--b:#38bdf8;--g:#4ade80;--y:#facc15;--r:#f87171;--t:#2dd4bf;--orb1:#0891b2;--orb2:#7c3aed}
+    [data-theme="light"]{--bg:#f0fdfc;--s1:#ffffff;--s2:#ccfbf1;--border:rgba(20,184,166,0.12);--text:#0f2a28;--sub:#4a6e6a;--dim:#8aacaa;--nav-bg:rgba(255,255,255,0.88);--orb1:#99f6e4;--orb2:#ddd6fe}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s}
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+    .orb-1{width:500px;height:500px;background:radial-gradient(circle,var(--orb1) 0%,transparent 70%);top:-150px;left:-100px;opacity:.3}
+    .orb-2{width:400px;height:400px;background:radial-gradient(circle,var(--orb2) 0%,transparent 70%);bottom:0;right:-100px;opacity:.25}
+    .pill-nav{position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:.4rem;padding:.5rem .55rem .5rem 1rem;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:999px;width:max-content;max-width:96vw;transition:background .35s,border-color .35s}
+    .nav-logo{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:800;background:linear-gradient(135deg,var(--v),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;margin-right:.3rem;white-space:nowrap}
+    .nav-links{display:flex;list-style:none;gap:.1rem}
+    .nav-links a{text-decoration:none;color:var(--sub);font-size:.78rem;font-weight:500;padding:.35rem .7rem;border-radius:999px;transition:color .2s,background .2s;white-space:nowrap}
+    .nav-links a:hover{color:var(--text);background:rgba(109,40,217,.08)}
+    .nav-links a.active{color:#fff;background:var(--v)}
+    .theme-btn{width:30px;height:30px;border-radius:999px;border:1px solid var(--border);background:var(--s2);color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:background .2s,color .2s;flex-shrink:0;margin-left:.15rem}
+    .theme-btn:hover{background:var(--v);color:#fff;border-color:var(--v)}
+    .page-top{position:relative;z-index:1;padding:7.5rem 2rem 2rem;max-width:900px;margin:0 auto}
+    .ph-badge{display:inline-flex;align-items:center;gap:.45rem;font-size:.72rem;font-weight:600;color:var(--t);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.2);padding:.3rem .8rem;border-radius:999px;margin-bottom:1.25rem;letter-spacing:.04em}
+    .ph-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--t);box-shadow:0 0 6px var(--t)}
+    .page-top h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:.75rem;background:linear-gradient(135deg,var(--text) 0%,var(--t) 60%,var(--b) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-top p{font-size:.9rem;color:var(--sub);line-height:1.7}
+    .page-content{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:1.5rem 2rem 6rem}
+    .conv-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+    .conv-card{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:1.75rem;transition:background .35s}
+    .app-label{display:inline-block;font-size:.68rem;font-weight:700;color:var(--t);background:rgba(45,212,191,.1);border:1px solid rgba(45,212,191,.2);padding:.2rem .65rem;border-radius:999px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+    .conv-card h3{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:1.1rem}
+    .field{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.85rem}
+    .field label{font-size:.78rem;font-weight:600;color:var(--sub);letter-spacing:.02em}
+    .field input,.field select{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:.65rem .9rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--text);outline:none;transition:border-color .2s,background .35s,color .35s}
+    .field input:focus,.field select:focus{border-color:rgba(45,212,191,.5)}
+    .field input::placeholder{color:var(--dim)}
+    .field select option{background:var(--s2);color:var(--text)}
+    .conv-btn{width:100%;padding:.7rem;background:linear-gradient(135deg,var(--t),var(--b));color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;transition:transform .2s,box-shadow .2s;margin-bottom:.75rem}
+    .conv-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(45,212,191,.3)}
+    .sonuc-box{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:.75rem 1rem;font-family:'Space Mono',monospace;font-size:.85rem;color:var(--t);display:none;text-align:center;font-weight:700;transition:background .35s}
+    .sonuc-box.visible{display:block}
+    .dark-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:center;gap:.65rem;font-size:.77rem;color:var(--dim)}
+    .dot{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+    @media(max-width:640px){.conv-grid{grid-template-columns:1fr}}
+    @media(max-width:600px){.pill-nav .nav-links{display:none}.page-top{padding:6.5rem 1.25rem 1.5rem}.page-content{padding:1rem 1.25rem 4rem}}
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <nav class="pill-nav">
+    <a href="index.html" class="nav-logo">Şevval Çulcu</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Ana Sayfa</a></li>
+      <li><a href="hakkimda.html">Hakkımda</a></li>
+      <li><a href="ilgi-alanlarim.html">İlgi Alanlarım</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="hafta4.html">Hafta 4</a></li>
+      <li><a href="hafta5.html">Hafta 5</a></li>
+      <li><a href="hafta6-1.html">Hafta 6-1</a></li>
+      <li><a href="hafta6-2.html" class="active">Hafta 6-2</a></li>
+      <li><a href="hafta7.html">Hafta 7</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn">🌙</button>
+  </nav>
+  <div class="page-top">
+    <div class="ph-badge">Hafta 6-2</div>
+    <h1>Birim Dönüştürücü</h1>
+    <p>Farklı mühendislik birimlerini birbirine dönüştürün: Sıcaklık, Uzunluk ve Kütle — HTML, CSS ve JavaScript.</p>
+  </div>
+  <main class="page-content">
+    <div class="conv-grid">
+      <div class="conv-card">
+        <div class="app-label">Kutu A</div>
+        <h3>Dönüştürücü 1</h3>
+        <div class="field"><label>Değer Giriniz</label><input type="number" id="degerA" placeholder="Örn: 50"></div>
+        <div class="field"><label>Dönüşüm Tipi</label>
+          <select id="donusumA">
+            <option value="m_km">Metre → Kilometre</option>
+            <option value="c_f">Celsius → Fahrenheit</option>
+            <option value="kg_g">Kilogram → Gram</option>
+            <option value="km_m">Kilometre → Metre</option>
+            <option value="f_c">Fahrenheit → Celsius</option>
+            <option value="g_kg">Gram → Kilogram</option>
+            <option value="c_k">Celsius → Kelvin</option>
+            <option value="km_mil">Kilometre → Mil</option>
+            <option value="mil_km">Mil → Kilometre</option>
+          </select>
+        </div>
+        <button class="conv-btn" onclick="donusturA()">Hesapla</button>
+        <div class="sonuc-box" id="sonucA"></div>
+      </div>
+      <div class="conv-card">
+        <div class="app-label">Kutu B</div>
+        <h3>Dönüştürücü 2</h3>
+        <div class="field"><label>Değer Giriniz</label><input type="number" id="degerB" placeholder="Örn: 50"></div>
+        <div class="field"><label>Dönüşüm Tipi</label>
+          <select id="donusumB">
+            <option value="kg_g">Kilogram → Gram</option>
+            <option value="m_km">Metre → Kilometre</option>
+            <option value="c_f">Celsius → Fahrenheit</option>
+            <option value="km_m">Kilometre → Metre</option>
+            <option value="f_c">Fahrenheit → Celsius</option>
+            <option value="g_kg">Gram → Kilogram</option>
+            <option value="c_k">Celsius → Kelvin</option>
+            <option value="km_mil">Kilometre → Mil</option>
+            <option value="mil_km">Mil → Kilometre</option>
+          </select>
+        </div>
+        <button class="conv-btn" onclick="donusturB()">Hesapla</button>
+        <div class="sonuc-box" id="sonucB"></div>
+      </div>
+    </div>
+  </main>
+  <footer class="dark-footer">
+    <span>© 2026 Şevval Çulcu</span><span class="dot"></span><span>Web Programlama Ödevi</span>
+  </footer>
+  <script>
+    const html=document.documentElement,btn=document.getElementById('themeBtn');
+    applyTheme(localStorage.getItem('sc-theme')||'dark');
+    btn.addEventListener('click',()=>{const n=html.dataset.theme==='dark'?'light':'dark';applyTheme(n);localStorage.setItem('sc-theme',n);});
+    function applyTheme(t){html.dataset.theme=t;btn.textContent=t==='dark'?'☀️':'🌙';}
+
+    function hesaplaDonusum(d,tip){
+      switch(tip){
+        case'm_km':return{sonuc:d/1000,birim:'km'};case'km_m':return{sonuc:d*1000,birim:'m'};
+        case'c_f':return{sonuc:d*9/5+32,birim:'°F'};case'f_c':return{sonuc:(d-32)*5/9,birim:'°C'};
+        case'kg_g':return{sonuc:d*1000,birim:'g'};case'g_kg':return{sonuc:d/1000,birim:'kg'};
+        case'c_k':return{sonuc:d+273.15,birim:'K'};case'km_mil':return{sonuc:d*0.621371,birim:'mil'};
+        case'mil_km':return{sonuc:d/0.621371,birim:'km'};default:return null;
+      }
+    }
+    function donusturA(){const d=parseFloat(document.getElementById('degerA').value),t=document.getElementById('donusumA').value,el=document.getElementById('sonucA');if(isNaN(d)){alert('Lütfen bir değer girin.');return;}const r=hesaplaDonusum(d,t);el.textContent='Sonuç: '+(+r.sonuc.toFixed(4))+' '+r.birim;el.classList.add('visible');}
+    function donusturB(){const d=parseFloat(document.getElementById('degerB').value),t=document.getElementById('donusumB').value,el=document.getElementById('sonucB');if(isNaN(d)){alert('Lütfen bir değer girin.');return;}const r=hesaplaDonusum(d,t);el.textContent='Sonuç: '+(+r.sonuc.toFixed(4))+' '+r.birim;el.classList.add('visible');}
+  </script>
+</body>
+</html>

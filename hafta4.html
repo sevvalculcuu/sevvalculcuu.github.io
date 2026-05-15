@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hafta 4 – Flexbox Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#07070d;--s1:#0e0e1a;--s2:#13131f;--border:rgba(255,255,255,0.07);--text:#f0f0f8;--sub:#8888a0;--dim:#44445a;--nav-bg:rgba(14,14,26,0.82);--v:#c084fc;--p:#e879f9;--b:#38bdf8;--g:#4ade80;--y:#facc15;--r:#f87171;--t:#2dd4bf;--orb1:#7c3aed;--orb2:#d97706}
+    [data-theme="light"]{--bg:#f5f3ff;--s1:#ffffff;--s2:#ede9fe;--border:rgba(109,40,217,0.1);--text:#1a0a2e;--sub:#5a4e6e;--dim:#9080a8;--nav-bg:rgba(255,255,255,0.88);--orb1:#ddd6fe;--orb2:#fde68a}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s}
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+    .orb-1{width:500px;height:500px;background:radial-gradient(circle,var(--orb1) 0%,transparent 70%);top:-150px;left:-100px;opacity:.35}
+    .orb-2{width:400px;height:400px;background:radial-gradient(circle,var(--orb2) 0%,transparent 70%);bottom:0;right:-100px;opacity:.2}
+    .pill-nav{position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:.4rem;padding:.5rem .55rem .5rem 1rem;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:999px;width:max-content;max-width:96vw;transition:background .35s,border-color .35s}
+    .nav-logo{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:800;background:linear-gradient(135deg,var(--v),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;margin-right:.3rem;white-space:nowrap}
+    .nav-links{display:flex;list-style:none;gap:.1rem}
+    .nav-links a{text-decoration:none;color:var(--sub);font-size:.78rem;font-weight:500;padding:.35rem .7rem;border-radius:999px;transition:color .2s,background .2s;white-space:nowrap}
+    .nav-links a:hover{color:var(--text);background:rgba(109,40,217,.08)}
+    .nav-links a.active{color:#fff;background:var(--v)}
+    .theme-btn{width:30px;height:30px;border-radius:999px;border:1px solid var(--border);background:var(--s2);color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:background .2s,color .2s;flex-shrink:0;margin-left:.15rem}
+    .theme-btn:hover{background:var(--v);color:#fff;border-color:var(--v)}
+    .page-top{position:relative;z-index:1;padding:7.5rem 2rem 3rem;max-width:1000px;margin:0 auto}
+    .ph-badge{display:inline-flex;align-items:center;gap:.45rem;font-size:.72rem;font-weight:600;color:var(--y);background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.2);padding:.3rem .8rem;border-radius:999px;margin-bottom:1.25rem;letter-spacing:.04em}
+    .ph-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--y);box-shadow:0 0 6px var(--y)}
+    .page-top h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:.75rem;background:linear-gradient(135deg,var(--text) 0%,var(--y) 60%,#fb923c 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-top p{font-size:.95rem;color:var(--sub);line-height:1.7}
+    .page-content{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:0 2rem 6rem}
+    .section-block{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:1.75rem 2rem;margin-bottom:1rem;transition:background .35s,border-color .25s}
+    .section-title{display:flex;align-items:center;gap:.65rem;margin-bottom:1.25rem;flex-wrap:wrap}
+    .section-title h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text)}
+    .code-tag{font-family:'Space Mono',monospace;font-size:.7rem;padding:.2rem .55rem;background:rgba(192,132,252,.1);color:var(--v);border-radius:6px;border:1px solid rgba(192,132,252,.15)}
+    .flex-cards{display:flex;flex-wrap:wrap;gap:.75rem}
+    .flex-card{flex:1;min-width:150px;background:var(--s2);border:1px solid var(--border);border-radius:14px;padding:1.1rem;display:flex;flex-direction:column;gap:.4rem;transition:background .35s}
+    .fc-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:.2rem}
+    .flex-card h4{font-family:'Syne',sans-serif;font-size:.88rem;font-weight:700;color:var(--text)}
+    .flex-card p{font-size:.78rem;color:var(--sub);line-height:1.5;margin:0}
+    .grow-demo{display:flex;gap:.75rem;height:120px;border-radius:14px;overflow:hidden}
+    .grow-box{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;border-radius:12px;transition:transform .2s}
+    .grow-box:hover{transform:scaleY(1.04)}
+    .grow-box code{font-family:'Space Mono',monospace;font-size:.68rem;opacity:.8}
+    .grow-box span{font-size:.78rem;font-weight:600}
+    .gb-1{flex-grow:1;background:linear-gradient(135deg,rgba(56,189,248,.25),rgba(56,189,248,.1));border:1px solid rgba(56,189,248,.2);color:var(--b)}
+    .gb-2{flex-grow:2;background:linear-gradient(135deg,rgba(74,222,128,.25),rgba(74,222,128,.1));border:1px solid rgba(74,222,128,.2);color:var(--g)}
+    .gb-3{flex-grow:1;background:linear-gradient(135deg,rgba(250,204,21,.25),rgba(250,204,21,.1));border:1px solid rgba(250,204,21,.2);color:var(--y)}
+    .dark-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:center;gap:.65rem;font-size:.77rem;color:var(--dim)}
+    .dot{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+    @media(max-width:600px){.pill-nav .nav-links{display:none}.page-top{padding:6.5rem 1.25rem 2rem}.page-content{padding:0 1.25rem 4rem}.grow-demo{height:90px}}
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <nav class="pill-nav">
+    <a href="index.html" class="nav-logo">Şevval Çulcu</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Ana Sayfa</a></li>
+      <li><a href="hakkimda.html">Hakkımda</a></li>
+      <li><a href="ilgi-alanlarim.html">İlgi Alanlarım</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="hafta4.html" class="active">Hafta 4</a></li>
+      <li><a href="hafta5.html">Hafta 5</a></li>
+      <li><a href="hafta6-1.html">Hafta 6-1</a></li>
+      <li><a href="hafta6-2.html">Hafta 6-2</a></li>
+      <li><a href="hafta7.html">Hafta 7</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn">🌙</button>
+  </nav>
+  <div class="page-top">
+    <div class="ph-badge">Hafta 4 – Flexbox Temelleri</div>
+    <h1>Modern CSS Düzeni</h1>
+    <p>Flexbox ile responsive ve dinamik sayfa düzenleri oluşturmayı adım adım keşfet.</p>
+  </div>
+  <main class="page-content">
+    <div class="section-block">
+      <div class="section-title"><h3>Flexbox Modülleri</h3><span class="code-tag">display: flex</span></div>
+      <div class="flex-cards">
+        <div class="flex-card"><div class="fc-icon" style="background:rgba(192,132,252,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18"/></svg></div><h4>Display Flex</h4><p>Temel flex konteyner kavramları</p></div>
+        <div class="flex-card"><div class="fc-icon" style="background:rgba(232,121,249,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e879f9" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v20M2 12h20"/></svg></div><h4>Justify Content</h4><p>Ana eksen hizalama yöntemleri</p></div>
+        <div class="flex-card"><div class="fc-icon" style="background:rgba(74,222,128,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div><h4>Align Items</h4><p>Çapraz eksen ve stretch</p></div>
+        <div class="flex-card"><div class="fc-icon" style="background:rgba(250,204,21,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#facc15" stroke-width="2.5" stroke-linecap="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/></svg></div><h4>Flex Direction</h4><p>Row ve column yön kontrolü</p></div>
+        <div class="flex-card"><div class="fc-icon" style="background:rgba(56,189,248,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><h4>Flex Grow</h4><p>Esnek genişleme oranları</p></div>
+        <div class="flex-card"><div class="fc-icon" style="background:rgba(248,113,113,.15)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2.5" stroke-linecap="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><h4>Flex Wrap</h4><p>Çok satırlı flex düzeni</p></div>
+      </div>
+    </div>
+    <div class="section-block">
+      <div class="section-title"><h3>Flex Grow — Canlı Demo</h3><span class="code-tag">flex-grow: 1 | 2 | 1</span></div>
+      <div class="grow-demo">
+        <div class="grow-box gb-1"><span>Kutu 1</span><code>flex-grow: 1</code></div>
+        <div class="grow-box gb-2"><span>Kutu 2</span><code>flex-grow: 2</code></div>
+        <div class="grow-box gb-3"><span>Kutu 3</span><code>flex-grow: 1</code></div>
+      </div>
+    </div>
+  </main>
+  <footer class="dark-footer">
+    <span>© 2026 Şevval Çulcu</span><span class="dot"></span><span>Web Programlama Ödevi</span>
+  </footer>
+  <script>
+    const html=document.documentElement,btn=document.getElementById('themeBtn');
+    applyTheme(localStorage.getItem('sc-theme')||'dark');
+    btn.addEventListener('click',()=>{const n=html.dataset.theme==='dark'?'light':'dark';applyTheme(n);localStorage.setItem('sc-theme',n);});
+    function applyTheme(t){html.dataset.theme=t;btn.textContent=t==='dark'?'☀️':'🌙';}
+  </script>
+</body>
+</html>

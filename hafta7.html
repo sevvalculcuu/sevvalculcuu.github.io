@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hafta 7 – Bootstrap + JavaScript</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script>document.documentElement.dataset.theme=localStorage.getItem('sc-theme')||'dark';</script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    :root{--bg:#07070d;--s1:#0e0e1a;--s2:#13131f;--border:rgba(255,255,255,0.07);--text:#f0f0f8;--sub:#8888a0;--dim:#44445a;--nav-bg:rgba(14,14,26,0.85);--v:#c084fc;--p:#e879f9;--b:#38bdf8;--g:#4ade80;--y:#facc15;--r:#f87171;--t:#2dd4bf}
+    [data-theme="light"]{--bg:#f5f3ff;--s1:#ffffff;--s2:#ede9fe;--border:rgba(109,40,217,0.1);--text:#1a0a2e;--sub:#5a4e6e;--dim:#9080a8;--nav-bg:rgba(255,255,255,0.88)}
+    body{font-family:'DM Sans',sans-serif!important;background:var(--bg)!important;color:var(--text)!important;min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s}
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+    .orb-1{width:500px;height:500px;background:radial-gradient(circle,#7c3aed 0%,transparent 70%);top:-150px;left:-100px;opacity:.3}
+    .orb-2{width:400px;height:400px;background:radial-gradient(circle,#0891b2 0%,transparent 70%);bottom:0;right:-100px;opacity:.2}
+    /* PILL NAV */
+    .pill-nav{position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:1050;display:flex;align-items:center;gap:.4rem;padding:.5rem .55rem .5rem 1rem;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:999px;width:max-content;max-width:96vw;transition:background .35s,border-color .35s}
+    .nav-logo{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:800;background:linear-gradient(135deg,var(--v),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;margin-right:.3rem;white-space:nowrap}
+    .pill-nav .nav-links{display:flex;list-style:none;gap:.1rem;margin:0;padding:0}
+    .pill-nav .nav-links a{text-decoration:none;color:var(--sub);font-size:.78rem;font-weight:500;padding:.35rem .7rem;border-radius:999px;transition:color .2s,background .2s;white-space:nowrap}
+    .pill-nav .nav-links a:hover{color:var(--text);background:rgba(109,40,217,.08)}
+    .pill-nav .nav-links a.active{color:#fff;background:var(--v)}
+    .theme-btn{width:30px;height:30px;border-radius:999px;border:1px solid var(--border);background:var(--s2);color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:background .2s,color .2s;flex-shrink:0;margin-left:.15rem}
+    .theme-btn:hover{background:var(--v);color:#fff;border-color:var(--v)}
+    /* Override Bootstrap dark */
+    .container{position:relative;z-index:1}
+    section{position:relative;z-index:1}
+    /* HERO */
+    .hero-section{padding:8rem 0 4rem;background:transparent!important}
+    .hero-section h1{font-family:'Syne',sans-serif!important;font-size:clamp(1.8rem,4vw,3rem)!important;font-weight:800!important;line-height:1.15!important;background:linear-gradient(135deg,var(--text) 0%,#c4b5fd 50%,var(--v) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-section .text-primary{background:linear-gradient(135deg,var(--v),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero-section .text-muted{color:var(--sub)!important}
+    /* Cards */
+    .card{background:var(--s1)!important;border:1px solid var(--border)!important;border-radius:16px!important;color:var(--text)!important;transition:border-color .25s,transform .2s,background .35s}
+    .card:hover{border-color:rgba(192,132,252,.3)!important;transform:translateY(-2px)}
+    .card h5,.card h6{font-family:'Syne',sans-serif!important;color:var(--text)!important}
+    .card .text-muted{color:var(--sub)!important}
+    .card .small{color:var(--sub)!important}
+    .card .border-bottom{border-color:var(--border)!important}
+    /* Badges */
+    .badge.bg-dark{background:rgba(255,255,255,.08)!important;color:var(--text)!important;border:1px solid var(--border)}
+    .badge.bg-primary{background:rgba(192,132,252,.2)!important;color:var(--v)!important;border:1px solid rgba(192,132,252,.3)}
+    .badge.bg-success{background:rgba(74,222,128,.15)!important;color:var(--g)!important;border:1px solid rgba(74,222,128,.25)}
+    .badge.bg-warning{background:rgba(250,204,21,.15)!important;color:var(--y)!important;border:1px solid rgba(250,204,21,.25)}
+    .badge.bg-danger{background:rgba(248,113,113,.15)!important;color:var(--r)!important;border:1px solid rgba(248,113,113,.25)}
+    .badge.bg-secondary{background:rgba(255,255,255,.08)!important;color:var(--sub)!important}
+    .badge.bg-info{background:rgba(56,189,248,.15)!important;color:var(--b)!important;border:1px solid rgba(56,189,248,.25)}
+    /* Section bg */
+    .bg-light{background:var(--s2)!important}
+    /* Buttons */
+    .btn-primary{background:linear-gradient(135deg,var(--v),var(--p))!important;border:none!important;color:#07070d!important;font-weight:700!important;border-radius:999px!important;transition:transform .2s,box-shadow .2s!important}
+    .btn-primary:hover{transform:translateY(-2px)!important;box-shadow:0 6px 24px rgba(192,132,252,.35)!important;background:linear-gradient(135deg,#d8b4fe,var(--p))!important}
+    .btn-outline-secondary{border-color:var(--border)!important;color:var(--sub)!important;border-radius:999px!important;transition:color .2s,border-color .2s!important}
+    .btn-outline-secondary:hover{color:var(--text)!important;border-color:rgba(255,255,255,.2)!important;background:rgba(255,255,255,.05)!important}
+    .btn-outline-primary{border-color:rgba(192,132,252,.3)!important;color:var(--v)!important;border-radius:999px!important}
+    .btn-outline-primary:hover{background:rgba(192,132,252,.1)!important;color:var(--v)!important}
+    .btn-outline-success{border-color:rgba(74,222,128,.3)!important;color:var(--g)!important;border-radius:999px!important}
+    .btn-outline-success:hover{background:rgba(74,222,128,.1)!important;color:var(--g)!important}
+    .btn-outline-warning{border-color:rgba(250,204,21,.3)!important;color:var(--y)!important;border-radius:999px!important}
+    .btn-outline-warning:hover{background:rgba(250,204,21,.1)!important;color:var(--y)!important}
+    /* Headings */
+    h2.fw-bold{font-family:'Syne',sans-serif!important;font-size:1.5rem!important;color:var(--text)!important}
+    .text-center.text-muted.mb-4{color:var(--sub)!important}
+    /* Section title badge */
+    .section-badge{display:inline-flex;align-items:center;gap:.45rem;font-size:.72rem;font-weight:600;color:var(--v);background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.2);padding:.3rem .8rem;border-radius:999px;margin-bottom:1.25rem;letter-spacing:.04em}
+    .section-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--v);box-shadow:0 0 6px var(--v)}
+    /* Card number */
+    .card-number{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:9px;font-family:'Syne',sans-serif;font-size:.85rem;font-weight:800;margin-bottom:.75rem}
+    /* Table */
+    .table{color:var(--sub)!important}
+    .table td{color:var(--sub)!important;border-color:var(--border)!important}
+    /* Reason cards */
+    .reason-card{padding:.85rem 1rem;border-radius:12px;height:100%}
+    .reason-card.bg-primary{background:rgba(192,132,252,.08)!important}
+    .reason-card.bg-success{background:rgba(74,222,128,.08)!important}
+    .reason-card.bg-warning{background:rgba(250,204,21,.08)!important}
+    .reason-card.bg-info{background:rgba(56,189,248,.08)!important}
+    .fw-semibold.text-primary{color:var(--v)!important}
+    .fw-semibold.text-success{color:var(--g)!important}
+    .fw-semibold.text-warning{color:var(--y)!important}
+    .fw-semibold.text-info{color:var(--b)!important}
+    /* Form */
+    .form-control,.form-select{background:var(--s2)!important;border:1px solid var(--border)!important;border-radius:10px!important;color:var(--text)!important;font-family:'DM Sans',sans-serif!important;transition:border-color .2s,background .35s!important}
+    .form-control:focus,.form-select:focus{border-color:rgba(192,132,252,.5)!important;box-shadow:0 0 0 3px rgba(192,132,252,.08)!important}
+    .form-control::placeholder{color:var(--dim)!important}
+    .form-select option{background:var(--s2)}
+    .form-label{color:var(--sub)!important;font-size:.82rem!important;font-weight:600!important}
+    .form-check-input{accent-color:var(--v)!important}
+    .form-check-label{color:var(--sub)!important;font-size:.84rem!important}
+    /* Result / alert */
+    #sonucAlan{background:var(--s2)!important;border:1px solid var(--border)!important;border-radius:14px!important;color:var(--sub)!important;transition:background .35s}
+    h4.fw-semibold{font-family:'Syne',sans-serif!important;color:var(--text)!important}
+    h3.fw-bold{font-family:'Syne',sans-serif!important;color:var(--text)!important;font-size:1.2rem!important}
+    /* Result card inner bg-light panels */
+    #sonucAlan .bg-light{background:var(--s1)!important}
+    /* Footer */
+    footer.bg-dark{background:var(--s1)!important;border-top:1px solid var(--border)!important}
+    footer .text-white-50{color:var(--dim)!important}
+    /* Hero badge override */
+    .hero-section .badge.bg-primary{background:rgba(192,132,252,.15)!important;color:var(--v)!important;border:1px solid rgba(192,132,252,.25);border-radius:999px!important;font-size:.72rem!important}
+    /* bi icons */
+    .bi{font-size:inherit}
+    @media(max-width:600px){.pill-nav .nav-links{display:none}}
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- PILL NAV -->
+  <nav class="pill-nav">
+    <a href="index.html" class="nav-logo">Şevval Çulcu</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Ana Sayfa</a></li>
+      <li><a href="hakkimda.html">Hakkımda</a></li>
+      <li><a href="ilgi-alanlarim.html">İlgi Alanlarım</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="hafta4.html">Hafta 4</a></li>
+      <li><a href="hafta5.html">Hafta 5</a></li>
+      <li><a href="hafta6-1.html">Hafta 6-1</a></li>
+      <li><a href="hafta6-2.html">Hafta 6-2</a></li>
+      <li><a href="hafta7.html" class="active">Hafta 7</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn">🌙</button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <span class="badge bg-primary mb-3">Hafta 7 Laboratuvar</span>
+          <h1 class="display-5 fw-bold lh-sm mb-3">
+            Bootstrap ve JavaScript ile<br>
+            <span class="text-primary">Etkinlik Kayıt Sayfası</span>
+          </h1>
+          <p class="text-muted mb-4">Bootstrap ile responsive arayüz tasarımı; JavaScript ile tema değiştirme ve form verilerinden başvuru özeti üretme.</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <a href="#basvuru" class="btn btn-primary px-4">
+              <i class="bi bi-pencil-square me-1"></i>Başvuru Formuna Git
+            </a>
+            <button id="temaBtn" class="btn btn-outline-secondary px-4">
+              <i class="bi bi-sun me-1"></i>Açık Temaya Geç
+            </button>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card shadow-sm rounded-4 border-0">
+            <div class="card-body p-4">
+              <h6 class="fw-semibold mb-3">Neler Kullanıldı?</h6>
+              <div class="d-flex flex-wrap gap-2 mb-3">
+                <span class="badge bg-dark">Navbar</span>
+                <span class="badge bg-primary">Grid</span>
+                <span class="badge bg-success">Card</span>
+                <span class="badge bg-warning">Form</span>
+                <span class="badge bg-danger">Alert</span>
+              </div>
+              <ul class="list-unstyled mb-0 small text-muted">
+                <li class="py-1 border-bottom"><i class="bi bi-check2 text-success me-2"></i>Bootstrap CDN kullanımı</li>
+                <li class="py-1 border-bottom"><i class="bi bi-check2 text-success me-2"></i>Responsive sütun yapısı</li>
+                <li class="py-1 border-bottom"><i class="bi bi-check2 text-success me-2"></i>JavaScript ile form verisi okuma</li>
+                <li class="py-1"><i class="bi bi-check2 text-success me-2"></i>Tema değiştirme işlemi</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ATÖLYELER -->
+  <section id="atolyeler" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center fw-bold mb-1">Atölye İçerikleri</h2>
+      <p class="text-center text-muted mb-4">Bootstrap bileşenlerini kullanarak tasarlanmış örnek kartlar</p>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0 rounded-4">
+            <div class="card-body p-4">
+              <span class="card-number bg-primary text-dark">01</span>
+              <h5 class="fw-semibold mb-2">Responsive Tasarım</h5>
+              <p class="text-muted small mb-3">Container, row, col yapıları ile farklı ekranlarda uyumlu görünüm.</p>
+              <button class="btn btn-sm btn-outline-primary">Detay</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0 rounded-4">
+            <div class="card-body p-4">
+              <span class="card-number bg-success text-dark">02</span>
+              <h5 class="fw-semibold mb-2">Form Yapıları</h5>
+              <p class="text-muted small mb-3">Bootstrap form-control, form-select ve form-check sınıfları.</p>
+              <button class="btn btn-sm btn-outline-success">Detay</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm border-0 rounded-4">
+            <div class="card-body p-4">
+              <span class="card-number bg-warning text-dark">03</span>
+              <h5 class="fw-semibold mb-2">JavaScript Etkileşimi</h5>
+              <p class="text-muted small mb-3">Form gönderildiğinde özet kart oluşturulur ve tema değiştirme çalışır.</p>
+              <button class="btn btn-sm btn-outline-warning">Detay</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ETKİNLİK BİLGİLERİ -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-lg-5">
+          <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body p-4">
+              <h5 class="fw-semibold mb-3">Etkinlik Bilgileri</h5>
+              <table class="table table-borderless table-sm mb-0">
+                <tbody>
+                  <tr><td class="text-muted">Tarih</td><td><span class="badge bg-primary">12 Mayıs</span></td></tr>
+                  <tr><td class="text-muted">Saat</td><td><span class="badge bg-secondary">13:30</span></td></tr>
+                  <tr><td class="text-muted">Yer</td><td><span class="badge bg-success">Lab A</span></td></tr>
+                  <tr><td class="text-muted">Kontenjan</td><td><span class="badge bg-danger">40 Kişi</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="card shadow-sm border-0 rounded-4 h-100">
+            <div class="card-body p-4">
+              <h5 class="fw-semibold mb-3">Neden Katılmalısınız?</h5>
+              <div class="row g-2">
+                <div class="col-6"><div class="reason-card bg-primary bg-opacity-10"><div class="fw-semibold text-primary small mb-1">Bootstrap pratiği</div><div class="text-muted" style="font-size:.8rem">Hazır sınıflarla kısa sürede profesyonel arayüz.</div></div></div>
+                <div class="col-6"><div class="reason-card bg-success bg-opacity-10"><div class="fw-semibold text-success small mb-1">JavaScript mantığı</div><div class="text-muted" style="font-size:.8rem">DOM erişimi, event listener ve koşullu yapı.</div></div></div>
+                <div class="col-6"><div class="reason-card bg-warning bg-opacity-10"><div class="fw-semibold text-warning small mb-1">Gerçek senaryo</div><div class="text-muted" style="font-size:.8rem">Gerçek bir form akışıyla kayıt sistemi.</div></div></div>
+                <div class="col-6"><div class="reason-card bg-info bg-opacity-10"><div class="fw-semibold text-info small mb-1">GitHub Pages uyumu</div><div class="text-muted" style="font-size:.8rem">Doğrudan ana sayfadan erişilebilir şekilde hazır.</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BAŞVURU FORMU -->
+  <section id="basvuru" class="py-5 bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-4 p-md-5">
+              <div class="d-flex align-items-center justify-content-between mb-1">
+                <h3 class="fw-bold mb-0">Başvuru Formu</h3>
+                <span class="badge bg-dark">Bootstrap Form</span>
+              </div>
+              <p class="text-muted small mb-4">Formu doldurun, JavaScript otomatik olarak başvuru özetinizi oluştursun.</p>
+              <form id="basvuruForm" novalidate>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium">Ad Soyad <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="adSoyad" placeholder="Adınız Soyadınız">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium">E-posta <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control" id="eposta" placeholder="ornek@eposta.com">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium">Bölüm <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="bolum" placeholder="Bilgisayar Mühendisliği">
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium">Sınıf <span class="text-danger">*</span></label>
+                    <select class="form-select" id="sinif">
+                      <option value="">Sınıf seçin...</option>
+                      <option value="1">1. Sınıf</option>
+                      <option value="2">2. Sınıf</option>
+                      <option value="3">3. Sınıf</option>
+                      <option value="4">4. Sınıf</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium">Oturum <span class="text-danger">*</span></label>
+                    <select class="form-select" id="oturum">
+                      <option value="">Oturum seçin...</option>
+                      <option value="Bootstrap + JS Projesi">Bootstrap + JS Projesi</option>
+                      <option value="Responsive Tasarım">Responsive Tasarım</option>
+                      <option value="Form Geliştirme">Form Geliştirme</option>
+                      <option value="GitHub Pages Yayını">GitHub Pages Yayını</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-medium">Katılım Türü <span class="text-danger">*</span></label>
+                    <select class="form-select" id="katilim">
+                      <option value="">Tür seçin...</option>
+                      <option value="yüzyüze">Yüz Yüze</option>
+                      <option value="online">Online</option>
+                      <option value="hibrit">Hibrit</option>
+                    </select>
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label fw-medium">Kısa Mesaj</label>
+                    <textarea class="form-control" id="mesaj" rows="3" placeholder="Eklemek istediğiniz bir şey..."></textarea>
+                  </div>
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="kvkk">
+                      <label class="form-check-label small" for="kvkk">Bilgilerimin sadece laboratuvar uygulaması amacıyla kullanılmasını kabul ediyorum.</label>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="d-flex gap-2 flex-wrap">
+                      <button type="submit" class="btn btn-primary"><i class="bi bi-send me-1"></i>Başvuru Özeti Oluştur</button>
+                      <button type="button" id="temizleBtn" class="btn btn-outline-secondary">Formu Temizle</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SONUÇ -->
+  <section id="sonuc" class="py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h4 class="fw-semibold mb-3"><i class="bi bi-clipboard2-check me-2 text-primary"></i>Başvuru Sonucu</h4>
+          <div id="sonucAlan" class="p-3 rounded-4 border">
+            <p class="text-muted text-center mb-0 py-2"><i class="bi bi-info-circle me-1"></i>Henüz başvuru özeti oluşturulmadı. Formu doldurduktan sonra sonuç burada görünecek.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white py-4 mt-auto">
+    <div class="container text-center">
+      <p class="mb-0 small text-white-50">© 2026 – Şevval Çulcu | Hafta 7 – Bootstrap + JavaScript | Web Programlama</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="scripts/hafta7.js"></script>
+</body>
+</html>

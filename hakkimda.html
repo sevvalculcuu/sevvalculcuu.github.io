@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Şevval Çulcu – Hakkımda</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#07070d;--s1:#0e0e1a;--s2:#13131f;--border:rgba(255,255,255,0.07);--text:#f0f0f8;--sub:#8888a0;--dim:#44445a;--nav-bg:rgba(14,14,26,0.82);--v:#c084fc;--p:#e879f9;--b:#38bdf8;--g:#4ade80;--y:#facc15;--r:#f87171;--t:#2dd4bf;--orb1:#7c3aed;--orb2:#db2777}
+    [data-theme="light"]{--bg:#f5f3ff;--s1:#ffffff;--s2:#ede9fe;--border:rgba(109,40,217,0.1);--text:#1a0a2e;--sub:#5a4e6e;--dim:#9080a8;--nav-bg:rgba(255,255,255,0.88);--orb1:#ddd6fe;--orb2:#fbcfe8}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s}
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+    .orb-1{width:500px;height:500px;background:radial-gradient(circle,var(--orb1) 0%,transparent 70%);top:-150px;left:-100px;opacity:.35}
+    .orb-2{width:400px;height:400px;background:radial-gradient(circle,var(--orb2) 0%,transparent 70%);bottom:0;right:-100px;opacity:.2}
+    .pill-nav{position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:.4rem;padding:.5rem .55rem .5rem 1rem;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:999px;width:max-content;max-width:96vw;transition:background .35s,border-color .35s}
+    .nav-logo{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:800;background:linear-gradient(135deg,var(--v),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;margin-right:.3rem;white-space:nowrap}
+    .nav-links{display:flex;list-style:none;gap:.1rem}
+    .nav-links a{text-decoration:none;color:var(--sub);font-size:.78rem;font-weight:500;padding:.35rem .7rem;border-radius:999px;transition:color .2s,background .2s;white-space:nowrap}
+    .nav-links a:hover{color:var(--text);background:rgba(109,40,217,.08)}
+    .nav-links a.active{color:#fff;background:var(--v)}
+    .theme-btn{width:30px;height:30px;border-radius:999px;border:1px solid var(--border);background:var(--s2);color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:background .2s,color .2s;flex-shrink:0;margin-left:.15rem}
+    .theme-btn:hover{background:var(--v);color:#fff;border-color:var(--v)}
+    .page-top{position:relative;z-index:1;padding:7.5rem 2rem 3rem;max-width:860px;margin:0 auto}
+    .ph-badge{display:inline-flex;align-items:center;gap:.45rem;font-size:.72rem;font-weight:600;color:var(--v);background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.2);padding:.3rem .8rem;border-radius:999px;margin-bottom:1.25rem;letter-spacing:.04em}
+    .ph-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--v);box-shadow:0 0 6px var(--v)}
+    .page-top h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:.75rem;background:linear-gradient(135deg,var(--text) 0%,#c4b5fd 60%,var(--v) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-top p{font-size:.95rem;color:var(--sub);line-height:1.7;max-width:580px}
+    .page-content{position:relative;z-index:1;max-width:860px;margin:0 auto;padding:0 2rem 6rem}
+    .section-block{background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:1.75rem 2rem;margin-bottom:1rem;transition:border-color .25s,background .35s}
+    .section-block:hover{border-color:rgba(192,132,252,.25)}
+    .section-title{display:flex;align-items:center;gap:.65rem;margin-bottom:1.1rem}
+    .section-title h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:var(--text)}
+    .s-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0}
+    p{font-size:.9rem;color:var(--sub);line-height:1.75;margin-bottom:.6rem}
+    p:last-child{margin-bottom:0}
+    strong{color:var(--text);font-weight:600}
+    .dark-list{padding-left:1.25rem;display:flex;flex-direction:column;gap:.45rem;margin-top:.2rem}
+    .dark-list li{font-size:.88rem;color:var(--sub);line-height:1.6}
+    .dark-ol{padding-left:1.25rem;display:flex;flex-direction:column;gap:.45rem;margin-top:.2rem}
+    .dark-ol li{font-size:.88rem;color:var(--sub);line-height:1.6}
+    .dark-quote{border-left:2px solid var(--v);padding:.85rem 1.1rem;background:rgba(192,132,252,.06);border-radius:0 12px 12px 0;font-size:.9rem;color:var(--sub);font-style:italic;margin-top:.2rem}
+    .dark-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:center;gap:.65rem;font-size:.77rem;color:var(--dim)}
+    .dot{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+    @media(max-width:600px){.pill-nav .nav-links{display:none}.page-top{padding:6.5rem 1.25rem 2rem}.page-content{padding:0 1.25rem 4rem}}
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <nav class="pill-nav">
+    <a href="index.html" class="nav-logo">Şevval Çulcu</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Ana Sayfa</a></li>
+      <li><a href="hakkimda.html" class="active">Hakkımda</a></li>
+      <li><a href="ilgi-alanlarim.html">İlgi Alanlarım</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="hafta4.html">Hafta 4</a></li>
+      <li><a href="hafta5.html">Hafta 5</a></li>
+      <li><a href="hafta6-1.html">Hafta 6-1</a></li>
+      <li><a href="hafta6-2.html">Hafta 6-2</a></li>
+      <li><a href="hafta7.html">Hafta 7</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn" title="Tema değiştir">🌙</button>
+  </nav>
+  <div class="page-top">
+    <div class="ph-badge">Hakkımda</div>
+    <h1>Şevval Çulcu</h1>
+    <p>Marmara Üniversitesi | Bilgisayar Mühendisliği 3. Sınıf | 171423961</p>
+  </div>
+  <main class="page-content">
+    <div class="section-block">
+      <div class="section-title"><div class="s-icon" style="background:rgba(192,132,252,.12)">👤</div><h3>Ben Kimim?</h3></div>
+      <p>Merhaba, ben <strong>Şevval Çulcu</strong>, Marmara Üniversitesi Bilgisayar Mühendisliği 3. sınıf öğrencisiyim. Web teknolojilerine ilgi duyuyor ve kendimi bu alanda geliştirmeyi hedefliyorum.</p>
+      <p>Özellikle <strong>frontend geliştirme</strong> ve kullanıcı deneyimi konularında çalışmalar yapmayı seviyorum.</p>
+    </div>
+    <div class="section-block">
+      <div class="section-title"><div class="s-icon" style="background:rgba(74,222,128,.12)">🎓</div><h3>Eğitim Bilgilerim</h3></div>
+      <ul class="dark-list">
+        <li>Marmara Üniversitesi</li>
+        <li>Bilgisayar Mühendisliği – 3. Sınıf</li>
+        <li>Öğrenci No: 171423961</li>
+        <li>Web Programlama dersi</li>
+      </ul>
+    </div>
+    <div class="section-block">
+      <div class="section-title"><div class="s-icon" style="background:rgba(250,204,21,.12)">💡</div><h3>Motivasyonum</h3></div>
+      <blockquote class="dark-quote">"İyi yazılmış bir web sitesi, hem kullanıcıyı hem geliştiriciyi mutlu eder."</blockquote>
+    </div>
+    <div class="section-block">
+      <div class="section-title"><div class="s-icon" style="background:rgba(232,121,249,.12)">🎯</div><h3>Hedeflerim</h3></div>
+      <ol class="dark-ol">
+        <li>Modern web teknolojilerini öğrenmek</li>
+        <li>Responsive tasarım geliştirmek</li>
+        <li>ASP.NET Core ile dinamik uygulamalar yazmak</li>
+      </ol>
+    </div>
+  </main>
+  <footer class="dark-footer">
+    <span>© 2026 Şevval Çulcu</span><span class="dot"></span><span>Web Programlama Ödevi</span>
+  </footer>
+  <script>
+    const html=document.documentElement,btn=document.getElementById('themeBtn');
+    applyTheme(localStorage.getItem('sc-theme')||'dark');
+    btn.addEventListener('click',()=>{const n=html.dataset.theme==='dark'?'light':'dark';applyTheme(n);localStorage.setItem('sc-theme',n);});
+    function applyTheme(t){html.dataset.theme=t;btn.textContent=t==='dark'?'☀️':'🌙';btn.title=t==='dark'?'Açık temaya geç':'Koyu temaya geç';}
+  </script>
+</body>
+</html>

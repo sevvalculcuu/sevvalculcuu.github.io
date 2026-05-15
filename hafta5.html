@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hafta 5 – CSS Position Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#07070d;--s1:#0e0e1a;--s2:#13131f;--border:rgba(255,255,255,0.07);--text:#f0f0f8;--sub:#8888a0;--dim:#44445a;--nav-bg:rgba(14,14,26,0.82);--v:#c084fc;--p:#e879f9;--b:#38bdf8;--g:#4ade80;--y:#facc15;--r:#f87171;--t:#2dd4bf;--orb1:#7c3aed;--orb2:#0891b2}
+    [data-theme="light"]{--bg:#f5f3ff;--s1:#ffffff;--s2:#ede9fe;--border:rgba(109,40,217,0.1);--text:#1a0a2e;--sub:#5a4e6e;--dim:#9080a8;--nav-bg:rgba(255,255,255,0.88);--orb1:#ddd6fe;--orb2:#bae6fd}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28"><polygon points="5,2 24,14 16,16 18,24 7,18 2,18" fill="%23c084fc" stroke="%23ffffff" stroke-width="1.5" stroke-linejoin="round"/></svg>') 5 2, auto}
+    .orb{position:fixed;border-radius:50%;filter:blur(90px);pointer-events:none;z-index:0}
+    .orb-1{width:500px;height:500px;background:radial-gradient(circle,var(--orb1) 0%,transparent 70%);top:-150px;left:-100px;opacity:.35}
+    .orb-2{width:400px;height:400px;background:radial-gradient(circle,var(--orb2) 0%,transparent 70%);bottom:0;right:-100px;opacity:.25}
+    .pill-nav{position:fixed;top:1.25rem;left:50%;transform:translateX(-50%);z-index:200;display:flex;align-items:center;gap:.4rem;padding:.5rem .55rem .5rem 1rem;background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid var(--border);border-radius:999px;width:max-content;max-width:96vw;transition:background .35s,border-color .35s}
+    .nav-logo{font-family:'Syne',sans-serif;font-size:.65rem;font-weight:800;background:linear-gradient(135deg,var(--v),var(--p));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-decoration:none;margin-right:.3rem;white-space:nowrap}
+    .nav-links{display:flex;list-style:none;gap:.1rem}
+    .nav-links a{text-decoration:none;color:var(--sub);font-size:.78rem;font-weight:500;padding:.35rem .7rem;border-radius:999px;transition:color .2s,background .2s;white-space:nowrap}
+    .nav-links a:hover{color:var(--text);background:rgba(109,40,217,.08)}
+    .nav-links a.active{color:#fff;background:var(--v)}
+    .theme-btn{width:30px;height:30px;border-radius:999px;border:1px solid var(--border);background:var(--s2);color:var(--sub);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:background .2s,color .2s;flex-shrink:0;margin-left:.15rem}
+    .theme-btn:hover{background:var(--v);color:#fff;border-color:var(--v)}
+    .page-wrapper{display:flex;flex-direction:column;min-height:100vh}
+    .page-top{position:relative;z-index:1;padding:7.5rem 2rem 2rem;max-width:1000px;margin:0 auto;width:100%}
+    .ph-badge{display:inline-flex;align-items:center;gap:.45rem;font-size:.72rem;font-weight:600;color:var(--b);background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);padding:.3rem .8rem;border-radius:999px;margin-bottom:1.25rem;letter-spacing:.04em}
+    .ph-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--b);box-shadow:0 0 6px var(--b)}
+    .page-top h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:800;line-height:1.1;letter-spacing:-.03em;margin-bottom:.75rem;background:linear-gradient(135deg,var(--text) 0%,var(--b) 60%,var(--v) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .page-top p{font-size:.9rem;color:var(--sub);line-height:1.7;max-width:600px}
+    .demo-area{flex:1;position:relative;z-index:1;display:flex;align-items:center;justify-content:center;padding:2rem}
+    .ann-card{position:relative;background:var(--s1);border:1px solid var(--border);border-radius:24px;padding:2.5rem 2rem 2rem;max-width:560px;width:100%;overflow:hidden;animation:card-glow 4s ease-in-out infinite;transition:border-color .3s,background .35s}
+    .ann-card:hover{border-color:rgba(192,132,252,.4)}
+    @keyframes card-glow{0%,100%{box-shadow:0 0 0 rgba(192,132,252,0)}50%{box-shadow:0 0 40px rgba(192,132,252,.12)}}
+    .tag-abs{position:absolute;padding:5px 12px;border-radius:8px;font-size:.7rem;font-weight:700;letter-spacing:.04em;z-index:10;transition:transform .3s,box-shadow .3s}
+    .tag-1{top:18px;left:18px;background:rgba(232,121,249,.15);color:var(--p);border:1px solid rgba(232,121,249,.25);transform:rotate(-4deg);animation:drift1 4s ease-in-out infinite}
+    .tag-1:hover{transform:rotate(-4deg) scale(1.1);box-shadow:0 4px 16px rgba(232,121,249,.25)}
+    .tag-2{top:18px;right:18px;background:rgba(74,222,128,.15);color:var(--g);border:1px solid rgba(74,222,128,.25);transform:rotate(4deg);animation:drift2 3.5s ease-in-out infinite}
+    .tag-2:hover{transform:rotate(4deg) scale(1.1);box-shadow:0 4px 16px rgba(74,222,128,.25)}
+    .tag-3{bottom:18px;right:18px;background:rgba(250,204,21,.15);color:var(--y);border:1px solid rgba(250,204,21,.25);transform:rotate(-3deg);animation:drift1 4.5s ease-in-out infinite reverse}
+    .tag-3:hover{transform:rotate(-3deg) scale(1.1);box-shadow:0 4px 16px rgba(250,204,21,.25)}
+    .tag-4{bottom:18px;left:18px;background:rgba(56,189,248,.15);color:var(--b);border:1px solid rgba(56,189,248,.25);transform:rotate(3deg);animation:drift2 3s ease-in-out infinite}
+    .tag-4:hover{transform:rotate(3deg) scale(1.1);box-shadow:0 4px 16px rgba(56,189,248,.25)}
+    @keyframes drift1{0%,100%{translate:0 0}50%{translate:2px -6px}}
+    @keyframes drift2{0%,100%{translate:0 0}50%{translate:-2px -5px}}
+    .ann-inner{position:relative;z-index:2;padding:1.5rem 0}
+    .ann-eyebrow{display:inline-block;font-size:.72rem;font-weight:600;color:var(--v);background:rgba(192,132,252,.1);border:1px solid rgba(192,132,252,.2);padding:.28rem .7rem;border-radius:999px;margin-bottom:1rem;letter-spacing:.04em}
+    .ann-inner h2{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;line-height:1.2;margin-bottom:.75rem;color:var(--text)}
+    .ann-inner p{font-size:.88rem;color:var(--sub);line-height:1.7;margin-bottom:1.25rem}
+    .ann-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.7rem 1.5rem;background:linear-gradient(135deg,var(--v),var(--p));color:#fff;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;border:none;border-radius:999px;cursor:pointer;transition:transform .2s,box-shadow .2s}
+    .ann-btn:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(192,132,252,.35)}
+    .fab{position:fixed;bottom:2rem;right:2rem;width:56px;height:56px;background:linear-gradient(135deg,var(--v),var(--p));border:none;border-radius:50%;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:150;box-shadow:0 6px 24px rgba(192,132,252,.4);animation:pulse 2s ease-in-out infinite,float 3s ease-in-out infinite;transition:transform .2s}
+    .fab:hover{transform:scale(1.15) translateY(-4px)}
+    @keyframes pulse{0%,100%{box-shadow:0 6px 24px rgba(192,132,252,.4)}50%{box-shadow:0 6px 36px rgba(192,132,252,.6)}}
+    @keyframes float{0%,100%{translate:0 0}50%{translate:0 -8px}}
+    .dark-footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.5rem 2rem;display:flex;align-items:center;justify-content:center;gap:.65rem;font-size:.77rem;color:var(--dim)}
+    .dot{width:3px;height:3px;border-radius:50%;background:var(--dim)}
+    @media(max-width:600px){.pill-nav .nav-links{display:none}.page-top{padding:6.5rem 1.25rem 1.5rem}.demo-area{padding:1rem}.fab{width:48px;height:48px;bottom:1.25rem;right:1.25rem;font-size:1.1rem}}
+  </style>
+</head>
+<body>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <nav class="pill-nav">
+    <a href="index.html" class="nav-logo">Şevval Çulcu</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Ana Sayfa</a></li>
+      <li><a href="hakkimda.html">Hakkımda</a></li>
+      <li><a href="ilgi-alanlarim.html">İlgi Alanlarım</a></li>
+      <li><a href="iletisim.html">İletişim</a></li>
+      <li><a href="hafta4.html">Hafta 4</a></li>
+      <li><a href="hafta5.html" class="active">Hafta 5</a></li>
+      <li><a href="hafta6-1.html">Hafta 6-1</a></li>
+      <li><a href="hafta6-2.html">Hafta 6-2</a></li>
+      <li><a href="hafta7.html">Hafta 7</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn">🌙</button>
+  </nav>
+  <div class="page-wrapper">
+    <div class="page-top">
+      <div class="ph-badge">Hafta 5 – CSS Position Lab</div>
+      <h1>Etkileşimli Duyuru Kartı</h1>
+      <p>CSS position özelliğini (relative, absolute, fixed) kullanarak dinamik ve etkileşimli bir arayüz bileşeni. Hover efektleri, animasyonlar ve z-index ile katmanlı tasarım.</p>
+    </div>
+    <main class="demo-area">
+      <div class="ann-card">
+        <div class="tag-abs tag-1">YAŞAYAN KÜTÜPHANESİ</div>
+        <div class="tag-abs tag-2">KÜLTÜR</div>
+        <div class="tag-abs tag-3">AÇIK ÖZVECİLİK</div>
+        <div class="tag-abs tag-4">KATILIMCİ YOK</div>
+        <div class="ann-inner">
+          <span class="ann-eyebrow">🎓 Üniversite Etkinliği</span>
+          <h2>Teknoloji Topluluğu Etkinliği</h2>
+          <p>"Yaşayan Kütüphane" konseptiyle öğrencilerimiz gerçek hayat projelerini tanıtacaklar. CSS Position, Flexbox ve Grid konularında uzmanlarımız sertifika ve hediye dağıtmaya hazır.</p>
+          <button class="ann-btn">Daha Fazla Bilgi</button>
+        </div>
+      </div>
+    </main>
+    <button class="fab" title="Etkinliğe Katıl">👋</button>
+    <footer class="dark-footer">
+      <span>© 2026 Şevval Çulcu</span><span class="dot"></span><span>CSS Position Lab</span>
+    </footer>
+  </div>
+  <script>
+    const html=document.documentElement,btn=document.getElementById('themeBtn');
+    applyTheme(localStorage.getItem('sc-theme')||'dark');
+    btn.addEventListener('click',()=>{const n=html.dataset.theme==='dark'?'light':'dark';applyTheme(n);localStorage.setItem('sc-theme',n);});
+    function applyTheme(t){html.dataset.theme=t;btn.textContent=t==='dark'?'☀️':'🌙';}
+  </script>
+</body>
+</html>
